@@ -35,6 +35,7 @@ class Main
 
       };
 
+
       const addNumbers = () =>
       {
          const input1 = document.getElementById( 'num1' );

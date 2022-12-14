@@ -58,7 +58,7 @@ class Main
                console.log( this.x );
                console.log( this.y );
 
-               let num = new Numbers( this.x, this.y );
+               const num = new Numbers( this.x, this.y );
                let f;
                if ( this == document.getElementById( 'add' ) )
                {
@@ -87,7 +87,7 @@ class Main
       };
       window.onload = function ()
       {
-         let inputs = new Inputs();
+         const inputs = new Inputs();
          document.getElementById( 'add' ).onclick = inputs.getButtons;
          document.getElementById( 'subtract' ).onclick = inputs.getButtons;
          document.getElementById( 'multiply' ).onclick = inputs.getButtons;
@@ -103,7 +103,7 @@ class Main
    }
 
 }
-let main = new Main().init()
+const main = new Main().init()
 
 
 

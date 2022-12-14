@@ -14,7 +14,6 @@ class Main
          {
             this.x = x;
             this.y = y;
-
          }
 
          add ()
@@ -53,7 +52,6 @@ class Main
             if ( this.x == "" || this.y == "" )
             {
                alert( 'Please Select 2 Numbers' );
-
 
             } else if ( this.x.value != "" || this.y.value != "" )
             {

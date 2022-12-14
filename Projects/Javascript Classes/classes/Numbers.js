@@ -1,5 +1,4 @@
 
-
 class Main
 {
    constructor ()
@@ -8,6 +7,7 @@ class Main
    }
    init ()
    {
+
       class Numbers
       {
          constructor ( x, y )
@@ -16,10 +16,12 @@ class Main
             this.y = y;
 
          }
+
          add ()
          {
             return `${ this.x } + ${ this.y } = ` + `${ +this.x + +this.y }`;
          }
+
          subtract ()
          {
             return `${ this.x } - ${ this.y } = ` + `${ +this.x - +this.y }`;
@@ -33,86 +35,85 @@ class Main
             return `${ this.x } / ${ this.y } = ` + `${ +this.x / +this.y }`;
          }
 
-      };
-
-
-      const addNumbers = () =>
+      }
+      class Inputs extends Numbers
       {
-         const input1 = document.getElementById( 'num1' );
-         const input2 = document.getElementById( 'num2' );
-         if ( input1.value == "" || input2.value == "" )
+         constructor ( x, y )
          {
-            alert( 'Please Select 2 Numbers' );
-         } else
-         {
-            const num = new Numbers( input1.value, input2.value );
+            super( x, y );
 
-            document.getElementById( "results" ).innerHTML = num.add();
          }
 
-      };
-      const subtractNumbers = () =>
-      {
-         const input1 = document.getElementById( 'num1' );
-         const input2 = document.getElementById( 'num2' );
+         getButtons ()
+         {
 
-         if ( input1.value == "" || input2.value == "" )
-         {
-            alert( 'Please Select 2 Numbers' );
-         } else
-         {
-            const num = new Numbers( input1.value, input2.value );
-            document.getElementById( "results" ).innerHTML = num.subtract();
+            this.x = document.getElementById( 'num1' ).value;
+            this.y = document.getElementById( 'num2' ).value;
+
+            if ( this.x == "" || this.y == "" )
+            {
+               alert( 'Please Select 2 Numbers' );
+
+
+            } else if ( this.x.value != "" || this.y.value != "" )
+            {
+               console.log( this.x );
+               console.log( this.y );
+
+               let num = new Numbers( this.x, this.y );
+               let f;
+               if ( this == document.getElementById( 'add' ) )
+               {
+                  f = num.add();
+                  console.log( f );
+
+               } else if ( this == document.getElementById( 'subtract' ) )
+               {
+                  f = num.subtract();
+                  console.log( f );
+               } else if ( this == document.getElementById( 'multiply' ) )
+               {
+                  f = num.multiply();
+                  console.log( f );
+               } else if ( this == document.getElementById( 'divide' ) )
+               {
+                  f = num.divide();
+                  console.log( f );
+               }
+               let results = document.getElementById( 'results' );
+               results.innerHTML = f;
+
+            }
          }
-      };
-      const multiplyNumbers = () =>
-      {
-         const input1 = document.getElementById( 'num1' );
-         const input2 = document.getElementById( 'num2' );
 
-         if ( input1.value == "" || input2.value == "" )
-         {
-            alert( 'Please Select 2 Numbers' );
-         } else
-         {
-
-            const num = new Numbers( input1.value, input2.value );
-            document.getElementById( "results" ).innerHTML = num.multiply();
-         }
-      };
-      const divideNumbers = () =>
-      {
-         const input1 = document.getElementById( 'num1' );
-         const input2 = document.getElementById( 'num2' );
-
-         if ( input1.value == "" || input2.value == "" )
-         {
-            alert( 'Please Select 2 Numbers' );
-         } else
-         {
-
-            const num = new Numbers( input1.value, input2.value );
-            document.getElementById( "results" ).innerHTML = num.divide();
-         }
       };
       window.onload = function ()
       {
-
-         const addButton = document.getElementById( 'add' );
-         addButton.onclick = addNumbers;
-         const subtractButton = document.getElementById( 'subtract' );
-         subtractButton.onclick = subtractNumbers;
-         const multiplyButton = document.getElementById( 'multiply' );
-         multiplyButton.onclick = multiplyNumbers;
-         const divideButton = document.getElementById( 'divide' );
-         divideButton.onclick = divideNumbers;
+         let inputs = new Inputs();
+         document.getElementById( 'add' ).onclick = inputs.getButtons;
+         document.getElementById( 'subtract' ).onclick = inputs.getButtons;
+         document.getElementById( 'multiply' ).onclick = inputs.getButtons;
+         document.getElementById( 'divide' ).onclick = inputs.getButtons;
+         document.getElementById( 'clear' ).onclick = function ()
+         {
+            document.getElementById( 'results' ).innerHTML = "";
+            document.getElementById( 'num1' ).value = "";
+            document.getElementById( 'num2' ).value = "";
+         };
 
       };
    }
 
 }
+let main = new Main().init()
 
-const main = new Main().init()
+
+
+
+
+
+
+
 
 
 

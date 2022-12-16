@@ -45,6 +45,7 @@ class Main
 
          getButtons ()
          {
+           
 
             this.x = document.getElementById( 'num1' ).value;
             this.y = document.getElementById( 'num2' ).value;

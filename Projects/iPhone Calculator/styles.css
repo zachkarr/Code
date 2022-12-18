@@ -80,3 +80,7 @@ h1 {
     padding-left: 125px;
   
 }
+::placeholder {
+  color: white;
+  opacity: 1; 
+}

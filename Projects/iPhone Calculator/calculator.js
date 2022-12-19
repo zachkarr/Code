@@ -2,7 +2,7 @@ class Main
 {
     init ()
     {
-        class Numbers
+        class Calculator
         {
             constructor ( x, y, z, input, oldvalue, negpos )
             {
@@ -12,7 +12,6 @@ class Main
                 this.input = input;
                 this.oldvalue = oldvalue;
                 this.negpos = negpos;
-
             }
             get X ()
             {
@@ -64,16 +63,16 @@ class Main
                 this.negpos = NEGPOS;
             }
         }
-        let number = new Number();
+        let calculator = new Calculator();
 
-        class Inputs extends Numbers
+        class Inputs extends Calculator
         {
             constructor ( x, y, z, input, oldvalue, negpos )
             {
                 super( x, y, z, input, oldvalue, negpos );
             }
 
-            getXNums ( x )
+            getNumbers ( x )
             {
                 if ( this == document.getElementById( '0' ) )
                 {
@@ -109,58 +108,58 @@ class Main
                 }
 
                 let res = document.getElementById( 'nums' );
-                if ( number.Z != "" )
+                if ( calculator.Z != "" )
                 {
-                    number.Z = "";
+                    calculator.Z = "";
                     res.value = x;
-                } else if ( number.Z == "" )
+                } else if ( calculator.Z == "" )
                 {
                     res.value += x;
                 }
 
-                number.X = res.value;
+                calculator.X = res.value;
                 let dec = document.getElementById( 'period' );
-                if ( number.X % 1 != 0 )
+                if ( calculator.X % 1 != 0 )
                 {
                     dec.disabled = true;
                 }
-                console.log( "x", number.X );
-                console.log( number );
-                return number.X;
+                console.log( "x", calculator.X );
+                console.log( calculator );
+                return calculator.X;
             }
             getInputs ( input )
             {
-                function setY ()
+                const setY = () =>
                 {
-                    number.Y = number.X;
-                    number.X = "";
-                    console.log( number.Y );
-                }
-                function setZ ()
+                    calculator.Y = calculator.X;
+                    calculator.X = "";
+                    console.log( calculator.Y );
+                };
+                const setZ = () =>
                 {
-                    if ( number.INPUT == "add" )
+                    if ( calculator.INPUT == "add" )
                     {
-                        number.Z = `${ +number.Y + +number.X }`;
-                    } else if ( number.INPUT == "subtract" )
+                        calculator.Z = `${ +calculator.Y + +calculator.X }`;
+                    } else if ( calculator.INPUT == "subtract" )
                     {
-                        number.Z = `${ +number.Y - +number.X }`;
-                    } else if ( number.INPUT == "multiply" )
+                        calculator.Z = `${ +calculator.Y - +calculator.X }`;
+                    } else if ( calculator.INPUT == "multiply" )
                     {
-                        number.Z = `${ +number.Y * +number.X }`;
-                    } else if ( number.INPUT == "divide" )
+                        calculator.Z = `${ +calculator.Y * +calculator.X }`;
+                    } else if ( calculator.INPUT == "divide" )
                     {
-                        number.Z = `${ +number.Y / +number.X }`;
-                    } else if ( number.INPUT == "remainder" )
+                        calculator.Z = `${ +calculator.Y / +calculator.X }`;
+                    } else if ( calculator.INPUT == "remainder" )
                     {
-                        number.Z = `${ +number.Y % +number.X }`;
+                        calculator.Z = `${ +calculator.Y % +calculator.X }`;
                     }
-                    number.X = ""; document.getElementById( 'nums' ).value = number.X;
-                    number.Y = "";
-                    console.log( number.Z );
-                    console.log( number );
-                }
+                    calculator.X = ""; document.getElementById( 'nums' ).value = calculator.X;
+                    calculator.Y = "";
+                    console.log( calculator.Z );
+                    console.log( calculator );
+                };
 
-                function clearButtons ()
+                const clearButtons = () =>
                 {
                     let buttons = document.querySelectorAll( 'button' );
                     let buttonsArray = [ ...buttons ];
@@ -175,128 +174,130 @@ class Main
                 if ( nums.value == "" )
                 {
                     document.getElementById( 'add' ).style.backgroundColor = "";
+                    document.getElementById( 'add' ).style.color = "";
+
                 } else
                 {
                     if ( this == document.getElementById( 'add' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = number.X;
+                        document.getElementById( 'nums' ).value = calculator.X;
                         document.getElementById( 'add' ).style.backgroundColor = "white";
                         document.getElementById( 'add' ).style.color = "orange";
                         input = this.id;
-                        number.OLDVALUE = this.id;
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = this.id;
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
                     } else if ( this == document.getElementById( 'subtract' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = number.X;
+                        document.getElementById( 'nums' ).value = calculator.X;
                         document.getElementById( 'subtract' ).style.backgroundColor = "white";
                         document.getElementById( 'subtract' ).style.color = "orange";
                         input = this.id;
-                        number.OLDVALUE = this.id;
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = this.id;
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
                     } else if ( this == document.getElementById( 'multiply' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = number.X;
+                        document.getElementById( 'nums' ).value = calculator.X;
                         document.getElementById( 'multiply' ).style.backgroundColor = "white";
                         document.getElementById( 'multiply' ).style.color = "orange";
                         input = this.id;
-                        number.OLDVALUE = this.id;
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = this.id;
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
                     } else if ( this == document.getElementById( 'divide' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = number.X;
+                        document.getElementById( 'nums' ).value = calculator.X;
                         document.getElementById( 'divide' ).style.backgroundColor = "white";
                         document.getElementById( 'divide' ).style.color = "orange";
                         input = this.id;
-                        number.OLDVALUE = this.id;
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = this.id;
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
 
                     } else if ( this == document.getElementById( 'remainder' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = number.X;
+                        document.getElementById( 'nums' ).value = calculator.X;
                         input = this.id;
-                        number.OLDVALUE = this.id;
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = this.id;
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
 
                     } else if ( this == document.getElementById( 'negpos' ) )
                     {
-                        if ( number.NEGPOS == null || number.NEGPOS != true )
+                        if ( calculator.NEGPOS == null || calculator.NEGPOS != true )
                         {
-                            number.NEGPOS = true;
-                            number.X = number.X * -1;
-                            document.getElementById( 'nums' ).value = number.X;
+                            calculator.NEGPOS = true;
+                            calculator.X = calculator.X * -1;
+                            document.getElementById( 'nums' ).value = calculator.X;
                             document.getElementById( 'negpos' ).style.backgroundColor = "grey";
-                            input = number.OLDVALUE;
-                        } else if ( number.NEGPOS != null || number.NEGPOS != false )
+                            input = calculator.OLDVALUE;
+                        } else if ( calculator.NEGPOS != null || calculator.NEGPOS != false )
                         {
-                            number.NEGPOS = false;
-                            number.X = number.X * -1;
-                            document.getElementById( 'nums' ).value = number.X;
+                            calculator.NEGPOS = false;
+                            calculator.X = calculator.X * -1;
+                            document.getElementById( 'nums' ).value = calculator.X;
                             document.getElementById( 'negpos' ).style.backgroundColor = "";
-                            input = number.OLDVALUE;
+                            input = calculator.OLDVALUE;
                         }
 
-                        console.log( number.NEGPOS );
-                        console.log( "oldvalue", number.OLDVALUE );
+                        console.log( calculator.NEGPOS );
+                        console.log( "oldvalue", calculator.OLDVALUE );
 
                     } else if ( this == document.getElementById( 'eq' ) )
                     {
                         setZ();
-                        document.getElementById( 'nums' ).value = number.Z;
+                        document.getElementById( 'nums' ).value = calculator.Z;
                         input = "";
-                        number.OLDVALUE = "";
-                        number.NEGPOS = false;
+                        calculator.OLDVALUE = "";
+                        calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
                         clearButtons();
 
                     } else if ( this == document.getElementById( 'period' ) )
                     {
-                        document.getElementById( 'nums' ).value = number.X + ".";
-                        input = number.OLDVALUE;
-                        console.log( "oldvalue in period", number.OLDVALUE );
+                        document.getElementById( 'nums' ).value = calculator.X + ".";
+                        input = calculator.OLDVALUE;
+                        console.log( "oldvalue in period", calculator.OLDVALUE );
                     }
                 }
-                number.INPUT = input;
-                console.log( number.INPUT );
-                console.log( number );
-                return number.INPUT;
+                calculator.INPUT = input;
+                console.log( calculator.INPUT );
+                console.log( calculator );
+                return calculator.INPUT;
             }
         };
 
         window.onload = function ()
         {
-            window.resizeTo( 100, 100 );
-            let inputs = new Inputs( number.X, number.Y, number.INPUT );
+
+            let inputs = new Inputs( calculator.X, calculator.Y, calculator.INPUT );
             document.getElementById( 'eq' ).onclick = inputs.getInputs;
             document.getElementById( 'add' ).onclick = inputs.getInputs;
             document.getElementById( 'subtract' ).onclick = inputs.getInputs;
@@ -305,22 +306,22 @@ class Main
             document.getElementById( 'remainder' ).onclick = inputs.getInputs;
             document.getElementById( 'negpos' ).onclick = inputs.getInputs;
             document.getElementById( 'period' ).onclick = inputs.getInputs;
-            document.getElementById( '0' ).onclick = inputs.getXNums;
-            document.getElementById( '1' ).onclick = inputs.getXNums;
-            document.getElementById( '2' ).onclick = inputs.getXNums;
-            document.getElementById( '3' ).onclick = inputs.getXNums;
-            document.getElementById( '4' ).onclick = inputs.getXNums;
-            document.getElementById( '5' ).onclick = inputs.getXNums;
-            document.getElementById( '6' ).onclick = inputs.getXNums;
-            document.getElementById( '7' ).onclick = inputs.getXNums;
-            document.getElementById( '8' ).onclick = inputs.getXNums;
-            document.getElementById( '9' ).onclick = inputs.getXNums;
+            document.getElementById( '0' ).onclick = inputs.getNumbers;
+            document.getElementById( '1' ).onclick = inputs.getNumbers;
+            document.getElementById( '2' ).onclick = inputs.getNumbers;
+            document.getElementById( '3' ).onclick = inputs.getNumbers;
+            document.getElementById( '4' ).onclick = inputs.getNumbers;
+            document.getElementById( '5' ).onclick = inputs.getNumbers;
+            document.getElementById( '6' ).onclick = inputs.getNumbers;
+            document.getElementById( '7' ).onclick = inputs.getNumbers;
+            document.getElementById( '8' ).onclick = inputs.getNumbers;
+            document.getElementById( '9' ).onclick = inputs.getNumbers;
             document.getElementById( 'clear' ).onclick = function ()
             {
                 document.getElementById( 'nums' ).value = "";
-                number.Y = "";
-                number.X = "";
-                number.INPUT = "";
+                calculator.Y = "";
+                calculator.X = "";
+                calculator.INPUT = "";
                 let dec = document.getElementById( 'period' );
                 dec.disabled = false;
                 let buttons = document.querySelectorAll( 'button' );

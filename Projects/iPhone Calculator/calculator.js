@@ -122,7 +122,7 @@ class Main
                 {
                     dec.disabled = true;
                 }
-
+                console.log( calculator );
                 return calculator.X;
             }
             getInputs ( input )
@@ -260,6 +260,7 @@ class Main
                     }
                 }
                 calculator.INPUT = input;
+                console.log( calculator );
                 return calculator.INPUT;
             }
         };

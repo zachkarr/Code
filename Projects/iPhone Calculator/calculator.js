@@ -165,16 +165,21 @@ class Main
                         button.style.color = "";
                     } );
                 };
-                const ASMD = ( id ) =>
+                const addValues = () =>
                 {
                     document.getElementById( 'nums' ).value = calculator.X;
-                    document.getElementById( id ).style.backgroundColor = "white";
-                    document.getElementById( id ).style.color = "orange";
                     input = this.id;
                     calculator.OLDVALUE = this.id;
                     calculator.NEGPOS = false;
                     let dec = document.getElementById( 'period' );
                     dec.disabled = false;
+                };
+                const ASMD = ( id ) =>
+                {
+
+                    document.getElementById( id ).style.backgroundColor = "white";
+                    document.getElementById( id ).style.color = "orange";
+
                 };
 
                 let nums = document.getElementById( 'nums' );
@@ -190,36 +195,34 @@ class Main
                         setY();
                         clearButtons();
                         ASMD( 'add' );
+                        addValues();
                     } else if ( this == document.getElementById( 'subtract' ) )
                     {
                         setY();
                         clearButtons();
                         ASMD( 'subtract' );
+                        addValues();
 
                     } else if ( this == document.getElementById( 'multiply' ) )
                     {
                         setY();
                         clearButtons();
                         ASMD( 'multiply' );
+                        addValues();
 
                     } else if ( this == document.getElementById( 'divide' ) )
                     {
                         setY();
                         clearButtons();
                         ASMD( 'divide' );
+                        addValues();
 
 
                     } else if ( this == document.getElementById( 'remainder' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = calculator.X;
-                        input = this.id;
-                        calculator.OLDVALUE = this.id;
-                        calculator.NEGPOS = false;
-                        let dec = document.getElementById( 'period' );
-                        dec.disabled = false;
-
+                        addValues();
 
                     } else if ( this == document.getElementById( 'negpos' ) )
                     {

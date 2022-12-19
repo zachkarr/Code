@@ -74,37 +74,38 @@ class Main
 
             getNumbers ( x )
             {
-                if ( this == document.getElementById( '0' ) )
+                switch ( this )
                 {
-                    x = 0;
-                } else if ( this == document.getElementById( '1' ) )
-                {
-                    x = 1;
-                } else if ( this == document.getElementById( '2' ) )
-                {
-                    x = 2;
-                } else if ( this == document.getElementById( '3' ) )
-                {
-                    x = 3;
-                } else if ( this == document.getElementById( '4' ) )
-                {
-                    x = 4;
-                }
-                else if ( this == document.getElementById( '5' ) )
-                {
-                    x = 5;
-                } else if ( this == document.getElementById( '6' ) )
-                {
-                    x = 6;
-                } else if ( this == document.getElementById( '7' ) )
-                {
-                    x = 7;
-                } else if ( this == document.getElementById( '8' ) )
-                {
-                    x = 8;
-                } else if ( this == document.getElementById( '9' ) )
-                {
-                    x = 9;
+                    case document.getElementById( '0' ):
+                        x = 0;
+                        break;
+                    case document.getElementById( '1' ):
+                        x = 1;
+                        break;
+                    case document.getElementById( '2' ):
+                        x = 2;
+                        break;
+                    case document.getElementById( '3' ):
+                        x = 3;
+                        break;
+                    case document.getElementById( '4' ):
+                        x = 4;
+                        break;
+                    case document.getElementById( '5' ):
+                        x = 5;
+                        break;
+                    case document.getElementById( '6' ):
+                        x = 6;
+                        break;
+                    case document.getElementById( '7' ):
+                        x = 7;
+                        break;
+                    case document.getElementById( '8' ):
+                        x = 8;
+                        break;
+                    case document.getElementById( '9' ):
+                        x = 9;
+                        break;
                 }
 
                 let res = document.getElementById( 'nums' );

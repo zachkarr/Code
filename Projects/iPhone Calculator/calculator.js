@@ -233,6 +233,7 @@ class Main
                             document.getElementById( 'nums' ).value = calculator.X;
                             document.getElementById( 'negpos' ).style.backgroundColor = "grey";
                             input = calculator.OLDVALUE;
+                            console.log( calculator );
                         } else if ( calculator.NEGPOS != null || calculator.NEGPOS != false )
                         {
                             calculator.NEGPOS = false;
@@ -240,6 +241,7 @@ class Main
                             document.getElementById( 'nums' ).value = calculator.X;
                             document.getElementById( 'negpos' ).style.backgroundColor = "";
                             input = calculator.OLDVALUE;
+                            console.log( calculator );
                         }
 
                     } else if ( this == document.getElementById( 'eq' ) )
@@ -260,7 +262,6 @@ class Main
                     }
                 }
                 calculator.INPUT = input;
-                console.log( calculator );
                 return calculator.INPUT;
             }
         };

@@ -9,12 +9,12 @@ html, body {
 .buttonGrey {
    width: 100px;
     height: 100px;
-    margin-top: 5px;
-    margin-right: 1px;
+    margin-bottom: 10px;
+    margin-right: 10px;
     text-align: center;
     border-radius: 50px;
     border: 20px;;
-    font-size: 35px; 
+    font-size: 45px; 
     background-color: rgb(172, 165, 171);
     border-color: rgb(172, 165, 171);;
   
@@ -23,11 +23,11 @@ html, body {
 .buttonDark {
     width: 100px;
     height: 100px;
-    margin-top: 5px;
-    margin-right: 1px;
+    margin-bottom: 10px;
+    margin-right: 10px;
     text-align: center;
     border-radius: 50px;
-    font-size: 35px;
+    font-size: 45px;
     border: 20px;;
     background-color: rgb(75, 71, 71);
     border-color: rgb(75, 71, 71);;
@@ -36,21 +36,8 @@ html, body {
 .buttonOrange {
     width: 100px;
     height: 100px;
-    margin-top: 5px;
-    margin-right: 1px;
-    text-align: center;
-    border-radius: 50px;
-    font-size: 40px;
-    border: 20px;;
-    background-color: orange;
-    border-color: orange;
-    color: white
-}
-.buttonOrangeDivide {
-    width: 100px;
-    height: 100px;
-    margin-top: 5px;
-    margin-right: 1px;
+    margin-bottom: 10px;
+    margin-right: 10px;
     text-align: center;
     border-radius: 50px;
     font-size: 45px;
@@ -59,12 +46,25 @@ html, body {
     border-color: orange;
     color: white
 }
-.zeroDark {
-    width: 205px;
+.buttonOrangeDivide {
+    width: 100px;
     height: 100px;
-    margin-right: 1px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    text-align: center;
     border-radius: 50px;
-    font-size: 35px;
+    font-size: 55px;
+    border: 20px;;
+    background-color: orange;
+    border-color: orange;
+    color: white
+}
+.zeroDark {
+    width: 215px;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 50px;
+    font-size: 45px;
     border: 20px;;
     background-color: rgb(75, 71, 71);
     border-color: rgb(75, 71, 71);;
@@ -73,7 +73,7 @@ html, body {
 .nums {
     background-color: black;
     color: white;
-    font-size: 90px;
+    font-size: 95px;
     border-color: black;
 }
 h1 {

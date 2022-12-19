@@ -17,7 +17,6 @@ class Main
             {
                 return this.x;
             }
-
             set X ( X )
             {
                 this.x = X;
@@ -71,7 +70,6 @@ class Main
             {
                 super( x, y, z, input, oldvalue, negpos );
             }
-
             getNumbers ( x )
             {
                 switch ( this )
@@ -124,8 +122,7 @@ class Main
                 {
                     dec.disabled = true;
                 }
-                console.log( "x", calculator.X );
-                console.log( calculator );
+
                 return calculator.X;
             }
             getInputs ( input )
@@ -134,7 +131,6 @@ class Main
                 {
                     calculator.Y = calculator.X;
                     calculator.X = "";
-                    console.log( calculator.Y );
                 };
                 const setZ = () =>
                 {
@@ -156,8 +152,7 @@ class Main
                     }
                     calculator.X = ""; document.getElementById( 'nums' ).value = calculator.X;
                     calculator.Y = "";
-                    console.log( calculator.Z );
-                    console.log( calculator );
+
                 };
 
                 const clearButtons = () =>
@@ -169,6 +164,17 @@ class Main
                         button.style.backgroundColor = "";
                         button.style.color = "";
                     } );
+                };
+                const ASMD = ( id ) =>
+                {
+                    document.getElementById( 'nums' ).value = calculator.X;
+                    document.getElementById( id ).style.backgroundColor = "white";
+                    document.getElementById( id ).style.color = "orange";
+                    input = this.id;
+                    calculator.OLDVALUE = this.id;
+                    calculator.NEGPOS = false;
+                    let dec = document.getElementById( 'period' );
+                    dec.disabled = false;
                 };
 
                 let nums = document.getElementById( 'nums' );
@@ -183,57 +189,24 @@ class Main
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = calculator.X;
-                        document.getElementById( 'add' ).style.backgroundColor = "white";
-                        document.getElementById( 'add' ).style.color = "orange";
-                        input = this.id;
-                        calculator.OLDVALUE = this.id;
-                        calculator.NEGPOS = false;
-                        let dec = document.getElementById( 'period' );
-                        dec.disabled = false;
-                        console.log( "oldvalue", calculator.OLDVALUE );
-
+                        ASMD( 'add' );
                     } else if ( this == document.getElementById( 'subtract' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = calculator.X;
-                        document.getElementById( 'subtract' ).style.backgroundColor = "white";
-                        document.getElementById( 'subtract' ).style.color = "orange";
-                        input = this.id;
-                        calculator.OLDVALUE = this.id;
-                        calculator.NEGPOS = false;
-                        let dec = document.getElementById( 'period' );
-                        dec.disabled = false;
-                        console.log( "oldvalue", calculator.OLDVALUE );
+                        ASMD( 'subtract' );
 
                     } else if ( this == document.getElementById( 'multiply' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = calculator.X;
-                        document.getElementById( 'multiply' ).style.backgroundColor = "white";
-                        document.getElementById( 'multiply' ).style.color = "orange";
-                        input = this.id;
-                        calculator.OLDVALUE = this.id;
-                        calculator.NEGPOS = false;
-                        let dec = document.getElementById( 'period' );
-                        dec.disabled = false;
-                        console.log( "oldvalue", calculator.OLDVALUE );
+                        ASMD( 'multiply' );
 
                     } else if ( this == document.getElementById( 'divide' ) )
                     {
                         setY();
                         clearButtons();
-                        document.getElementById( 'nums' ).value = calculator.X;
-                        document.getElementById( 'divide' ).style.backgroundColor = "white";
-                        document.getElementById( 'divide' ).style.color = "orange";
-                        input = this.id;
-                        calculator.OLDVALUE = this.id;
-                        calculator.NEGPOS = false;
-                        let dec = document.getElementById( 'period' );
-                        dec.disabled = false;
-                        console.log( "oldvalue", calculator.OLDVALUE );
+                        ASMD( 'divide' );
 
 
                     } else if ( this == document.getElementById( 'remainder' ) )
@@ -246,7 +219,6 @@ class Main
                         calculator.NEGPOS = false;
                         let dec = document.getElementById( 'period' );
                         dec.disabled = false;
-                        console.log( "oldvalue", calculator.OLDVALUE );
 
 
                     } else if ( this == document.getElementById( 'negpos' ) )
@@ -267,9 +239,6 @@ class Main
                             input = calculator.OLDVALUE;
                         }
 
-                        console.log( calculator.NEGPOS );
-                        console.log( "oldvalue", calculator.OLDVALUE );
-
                     } else if ( this == document.getElementById( 'eq' ) )
                     {
                         setZ();
@@ -285,38 +254,43 @@ class Main
                     {
                         document.getElementById( 'nums' ).value = calculator.X + ".";
                         input = calculator.OLDVALUE;
-                        console.log( "oldvalue in period", calculator.OLDVALUE );
                     }
                 }
                 calculator.INPUT = input;
-                console.log( calculator.INPUT );
-                console.log( calculator );
                 return calculator.INPUT;
             }
         };
 
         window.onload = function ()
         {
-
             let inputs = new Inputs( calculator.X, calculator.Y, calculator.INPUT );
-            document.getElementById( 'eq' ).onclick = inputs.getInputs;
-            document.getElementById( 'add' ).onclick = inputs.getInputs;
-            document.getElementById( 'subtract' ).onclick = inputs.getInputs;
-            document.getElementById( 'multiply' ).onclick = inputs.getInputs;
-            document.getElementById( 'divide' ).onclick = inputs.getInputs;
-            document.getElementById( 'remainder' ).onclick = inputs.getInputs;
-            document.getElementById( 'negpos' ).onclick = inputs.getInputs;
-            document.getElementById( 'period' ).onclick = inputs.getInputs;
-            document.getElementById( '0' ).onclick = inputs.getNumbers;
-            document.getElementById( '1' ).onclick = inputs.getNumbers;
-            document.getElementById( '2' ).onclick = inputs.getNumbers;
-            document.getElementById( '3' ).onclick = inputs.getNumbers;
-            document.getElementById( '4' ).onclick = inputs.getNumbers;
-            document.getElementById( '5' ).onclick = inputs.getNumbers;
-            document.getElementById( '6' ).onclick = inputs.getNumbers;
-            document.getElementById( '7' ).onclick = inputs.getNumbers;
-            document.getElementById( '8' ).onclick = inputs.getNumbers;
-            document.getElementById( '9' ).onclick = inputs.getNumbers;
+            const setInputs = ( id ) =>
+            {
+                document.getElementById( id ).onclick = inputs.getInputs;
+            };
+            const setNumbers = ( id ) =>
+            {
+                document.getElementById( id ).onclick = inputs.getNumbers;
+            };
+            setInputs( 'eq' );
+            setInputs( 'add' );
+            setInputs( 'subtract' );
+            setInputs( 'multiply' );
+            setInputs( 'divide' );
+            setInputs( 'remainder' );
+            setInputs( 'negpos' );
+            setInputs( 'period' );
+            setNumbers( '0' );
+            setNumbers( '1' );
+            setNumbers( '2' );
+            setNumbers( '3' );
+            setNumbers( '4' );
+            setNumbers( '5' );
+            setNumbers( '6' );
+            setNumbers( '7' );
+            setNumbers( '8' );
+            setNumbers( '9' );
+
             document.getElementById( 'clear' ).onclick = function ()
             {
                 document.getElementById( 'nums' ).value = "";

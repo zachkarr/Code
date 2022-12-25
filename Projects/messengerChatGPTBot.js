@@ -40,7 +40,6 @@ require( 'dotenv' ).config();
         console.log( 'oldMessage', oldMessage );
         console.log( 'newMessage', newMessage );
 
-        console.log( newMessage.length );
         if ( oldMessage != newMessage )
         {
             exec( process.env.CURL_CMD + process.env.CURL_CMD2 + newMessage + process.env.CURL_CMD3, ( err, stdout, stderr ) =>

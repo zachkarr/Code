@@ -59,7 +59,7 @@ require( 'dotenv' ).config();
             oldMessage = newMessage;
         } else if ( newMessage == oldMessage )
         {
-            console.log( 'SAME' );
+            console.log( 'The Message Has Not Changed' );
         }
 
     }, 10000 );

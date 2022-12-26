@@ -4,6 +4,7 @@ require( 'dotenv' ).config();
 
 ( async () =>
 {
+
     const browser = await puppeteer.launch( { headless: false } );
     const page = await browser.newPage();
 
@@ -21,62 +22,63 @@ require( 'dotenv' ).config();
 
     result = await page.evaluate( () =>
     {
-        return Array.from( document.querySelectorAll( "div.x6prxxf.x1fc57z9.x1yc453h.x126k92a.x14ctfv" ) ).map( ( el ) => el.innerText );
+        return Array.from( document.querySelectorAll( "div.x6prxxf.x1fc57z9.x1yc453h.x126k92a.xzsf02u" ) ).map( ( el ) => el.innerText );
     } );
 
     let oldMessage = result[ result.length - 1 ];
 
     setInterval( async function ()
     {
-
+        let date = new Date;
         let result2 = await page.evaluate( () =>
         {
-            return Array.from( document.querySelectorAll( "div.x6prxxf.x1fc57z9.x1yc453h.x126k92a.x14ctfv" ) ).map( ( el ) => el.innerText );
+            return Array.from( document.querySelectorAll( "div.x6prxxf.x1fc57z9.x1yc453h.x126k92a.xzsf02u" ) ).map( ( el ) => el.innerText );
         } );
 
         let newMessage = result2[ result2.length - 1 ];
 
-        console.log( 'oldMessage', oldMessage );
-        console.log( 'newMessage', newMessage );
-        console.log( newMessage.length );
+        console.log( 'oldMessage', oldMessage + '\n' );
+        console.log( 'newMessage', newMessage + '\n' );
 
         if ( oldMessage != newMessage )
         {
-
-            exec( process.env.CURL_CMD + process.env.CURL_CMD2 + newMessage + process.env.CURL_CMD3, ( err, stdout, stderr ) =>
+            try
             {
-                try
+                exec( process.env.CURL_CMD + process.env.CURL_CMD2 + newMessage + process.env.CURL_CMD3, ( err, stdout, stderr ) =>
                 {
-                    console.log( "err", err );
-                    console.log( "stdout", stdout );
+
+                    console.log( "err: ", err + '\n' );
 
                     let json = JSON.parse( stdout );
 
                     const selector = '.xzsf02u.x1a2a7pz.x1n2onr6.x14wi4xw.x1iyjqo2.x1gh3ibb.xisnujt.xeuugli.x1odjw0f.notranslate';
 
+                    console.log( "AI Response Was: " + json.choices[ 0 ].text + '\n' );
+
                     page.type( selector, json.choices[ 0 ].text ).then( () =>
                     {
                         page.keyboard.press( 'Enter' );
-
                     } );
 
-                } catch ( e )
-                {
-                    console.log( e );
-                }
+                } );
 
-            } );
-
-            console.log( 'New Message...Fetching AI Response.' );
+            } catch ( e )
+            {
+                console.log( e );
+            }
+            console.log( date );
+            console.log( 'A New Message Has Been Sent... Generating AI Response...' + '\n' );
 
             oldMessage = newMessage;
 
         } else if ( newMessage == oldMessage )
         {
-            console.log( 'The Message Has Not Changed... Waiting.' );
+            console.log( date );
+            console.log( 'The Message Has Not Changed... Waiting for New Message...' + '\n' );
+
         }
 
-    }, 10000 );
+    }, 5000 );
 
 } )();
 

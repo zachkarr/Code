@@ -1434,7 +1434,7 @@ const configuration = new Configuration( {
             [ 1338, '㊗️' ],
             [ 1339, '🈴' ],
             [ 1340, '🈵' ],
-            [ 1341, ' *️⃣' ],
+            [ 1341, '*️⃣' ],
             [ 1342, '⏏️' ],
             [ 1343, '▶️' ],
             [ 1344, '⏸' ],
@@ -1540,7 +1540,7 @@ const configuration = new Configuration( {
             [ 1444, '🔟' ],
             [ 1445, '🔢' ],
             [ 1446, '#️⃣' ],
-            [ 1447, ' *️⃣' ],
+            [ 1447, '*️⃣' ],
             [ 1448, '⏏️' ],
             [ 1449, '▶️' ],
             [ 1450, '⏸' ],
@@ -1677,8 +1677,6 @@ const configuration = new Configuration( {
 
         ] );
 
-
-
         let result2 = await page.evaluate( () =>
         {
 
@@ -1686,36 +1684,32 @@ const configuration = new Configuration( {
 
         } );
 
-
-
         let newMessage = result2[ result2.length - 1 ];
 
         console.log( 'oldMessage', oldMessage + '\n' );
         console.log( 'newMessage', newMessage + '\n' );
-
-
-        for ( let [ key, value ] of emojiMap )
+        async function getEmojis ()
         {
-
-            for ( var i = 0; i < newemoji.length; i++ )
+            for ( let [ key, value ] of emojiMap )
             {
-                if ( newemoji[ i ] == `${ value }` && newemoji[ i ] != oldemoji[ i ] )
-                {
 
-                    console.log( key + "=" + value );
-                    newMessage = `${ value }`;
-                    // oldMessage = newMessage;
-
-                } else if ( oldemoji[ i ] == newemoji[ i ] )
+                for ( var i = 0; i < 4; i++ )
                 {
-                    console.log( 'Emoji hasnt changed' );
+                    if ( newemoji[ i ] == `${ value }` && newemoji[ i ] != oldemoji[ i ] )
+                    {
+
+                        console.log( key );
+                        newMessage = `${ value }`;
+                        console.log( newMessage );
+
+                    }
+
                 }
 
-
             }
-
+            oldemoji = newemoji;
         }
-
+        getEmojis();
 
         if ( oldMessage != newMessage )
         {
@@ -1754,15 +1748,14 @@ const configuration = new Configuration( {
 
                     console.log( 'whosMessage', whosMessage[ 0 ] );
 
-                    if ( whosMessage[ 0 ] == "Person to ignore" )
+                    if ( newMessage.includes( 'Message1ToIgnore' ) || newMessage.includes( 'Message2ToIgnore' ) || newMessage.includes( 'Message3ToIgnore' ) || newMessage.includes( 'Message4ToIgnore' ) || newMessage.includes( 'Message5ToIgnore' ) || newMessage.includes( 'Message6ToIgnore' ) || newMessage.includes( 'Message7ToIgnore' ) || newMessage.includes( 'Message8ToIgnore' ) )
                     {
-                        // page.$$( '.x6s0dn4.x78zum5.x1ll7btr.x1q0g3np' ).then( ( elems ) =>
-                        // {
-                        //   page.hover( elems[ elems.length - 1 ] );
-                        // } );
-                        //   let like = document.querySelectorAll( '.x6s0dn4.x78zum5.x1ll7btr.x1q0g3np ' );
+                        formattedMessage = whosMessage[ 0 ] + " Some Text To Say Instead";
+                    }
 
-                        //console.log( "likeComment", likeMessage );
+                    if ( whosMessage[ 0 ] == "Person to ignore" && ( !newMessage.includes( "Message1ToInclude" ) && !newMessage.includes( "Message2ToInclude" ) ) && !newMessage.includes( "Message3ToInclude" ) && !newMessage.includes( "Message4ToInclude" ) && !newMessage.includes( "Message5ToInclude" ) && !newMessage.includes( "Message6ToInclude" ) && !newMessage.includes( "Message7ToInclude" ) && !newMessage.includes( "Message8ToInclude" ) )
+                    {
+
                     } else
                     {
 
@@ -1783,11 +1776,12 @@ const configuration = new Configuration( {
                             const completion = await openai.createCompletion( {
                                 model: "text-curie-001",
                                 prompt: formattedMessage + " ",
-                                max_tokens: 1250,
+                                max_tokens: 500,
                                 temperature: 0.6,
                                 presence_penalty: 0.5,
 
                             } );
+
                             let AIresponse = "Hey, " + whosMessage[ 0 ] + "! " + completion.data.choices[ 0 ].text.trim();
                             console.log( "AI Response Was: " + AIresponse + '\n' );
 
@@ -1835,7 +1829,7 @@ const configuration = new Configuration( {
                 console.log( date );
 
                 console.log( 'A New Message Has Been Sent... Generating AI Response...' + '\n' );
-                oldemoji = newemoji;
+
                 oldMessage = newMessage;
             }
             getText();
@@ -1847,6 +1841,9 @@ const configuration = new Configuration( {
 
             console.log( 'The Message Has Not Changed... Waiting for New Message...' + '\n' );
 
+        } else if ( oldemoji == newemoji )
+        {
+            console.log( 'Emojis Have Not Changed' + '\n' );
         }
 
     }, 5000 );

@@ -19,7 +19,7 @@ define( [ 'N/runtime', 'N/ui/serverWidget' ], function ( runtime, serverWidget )
             let id = user.id;
 
             //1038 is outside sales, 1040 is account manager
-            if ( id == 1469541 )
+            if ( id == 1469541 || id == 413375 )
             {
                 context.form.clientScriptModulePath = '/SuiteScripts/Zach Dev/cs_account_information.js';
                 let button = context.form.addButton( {

@@ -5,6 +5,7 @@
  */
 define( [ 'N/runtime' ], function ( runtime )
 {
+
     function generatePdf ()
     {
         let setButtonText = document.getElementById( 'custpage_pdfdownload' );
@@ -178,12 +179,20 @@ define( [ 'N/runtime' ], function ( runtime )
                         frequency: '',
                         data: [],
 
-                        cleaningServices: function ( type, rate, description, bool, frequency, nights, data = [] )
+                        cleaningServices: function ( type, rate, description, frequency, nights, bool, data = [] )
                         {
                             for ( val of customerTable.j )
                             {
-                                if ( val.innerText.includes( type )
-                                    && val.parentElement.children[ 4 ]?.innerText != '' == bool )
+                                if ( val.innerText.includes( type ) && val.innerText != 'Specialty Allowance Monthly' )
+                                {
+                                    rate = val.parentElement.children[ 3 ]?.innerText ?? "";
+                                    description = val.parentElement.children[ 2 ]?.innerText ?? "";
+                                    frequency = val.parentElement.children[ 5 ]?.innerText ?? "";
+                                    nights = val.parentElement.children[ 6 ]?.innerText ?? "";
+                                    data.push( [ rate, description, frequency, nights ] );
+                                }
+                                if ( val.innerText.includes( type ) && val.innerText == 'Specialty Allowance Monthly'
+                                    && val.parentElement.children[ 4 ] == '' == bool )
                                 {
                                     rate = val.parentElement.children[ 3 ]?.innerText ?? "";
                                     description = val.parentElement.children[ 2 ]?.innerText ?? "";
@@ -206,7 +215,7 @@ define( [ 'N/runtime' ], function ( runtime )
                     let cleaningServices = customerItemsTableCells
                         .cleaningServices( 'Cleaning Services',
                             customerItemsTableCells.rate,
-                            customerItemsTableCells.description, true || false,
+                            customerItemsTableCells.description,
                             customerItemsTableCells.frequency,
                             customerItemsTableCells.nights,
                             customerItemsTableCells.data );
@@ -215,27 +224,38 @@ define( [ 'N/runtime' ], function ( runtime )
                         .cleaningServices( 'Day Porter',
                             customerItemsTableCells.rate,
                             customerItemsTableCells.description,
-                            true || false );
+                            customerItemsTableCells.frequency,
+                            customerItemsTableCells.nights,
+                        );
 
                     let discountItem = customerItemsTableCells
                         .cleaningServices( 'Discount Item',
                             customerItemsTableCells.rate,
                             customerItemsTableCells.description,
-                            true || false );
+                            customerItemsTableCells.frequency,
+                            customerItemsTableCells.nights,
+                        );
 
                     let escrow = customerItemsTableCells
                         .cleaningServices( 'Specialty Allowance Monthly',
                             customerItemsTableCells.rate,
                             customerItemsTableCells.description,
-                            false );
+                            customerItemsTableCells.frequency,
+                            customerItemsTableCells.nights,
+                            false
+                        );
 
                     let specialty = customerItemsTableCells
                         .cleaningServices( 'Specialty Allowance Monthly',
                             customerItemsTableCells.rate,
                             customerItemsTableCells.description,
-                            true );
+                            customerItemsTableCells.frequency,
+                            customerItemsTableCells.nights,
+                            true
+                        );
 
                     let highest = '';
+                    let other = [];
 
                     cleaningServices.data.forEach( ( item, i, list ) =>
                     {
@@ -244,12 +264,14 @@ define( [ 'N/runtime' ], function ( runtime )
                         {
 
                             highest = cleaningServices.data[ i ];
+                            other.push( item );
 
                         }
                         else if ( parseInt( list[ i ][ 0 ] ) > parseInt( list[ i - i ][ 0 ] ) )
                         {
 
                             highest = cleaningServices.data[ i - i ];
+                            other.push( item );
 
                         } else
                         {
@@ -260,18 +282,33 @@ define( [ 'N/runtime' ], function ( runtime )
 
                     let allCleaningServicesResults = [];
 
+                    let firstColumn = null;
+
+                    let secondColumn = null;
+
                     if ( cleaningServices.data.length > 1 )
                     {
-                        for ( let i = 0; i < cleaningServices.data.length; i++ )
+                        for ( let i = 0; i < other.length; i++ )
                         {
                             allCleaningServicesResults
-                                .push( 'Other Cleaning Services - Monthly Amount: ' +
-                                    cleaningServices.data[ i ][ 0 ] + '\n\nDesc: ' +
-                                    cleaningServices.data[ i ][ 1 ] + '\n' );
+                                .push( '\n\nOther Cleaning Services - Monthly Amount: ' +
+                                    other[ i ][ 0 ] + '\n\nDesc: ' +
+                                    other[ i ][ 1 ] );
                         }
-                    } else
+                    }
+                    else
                     {
                         allCleaningServicesResults = '';
+                    }
+
+                    if ( allCleaningServicesResults.length / 2 % 1 == 0 )
+                    {
+                        firstColumn = allCleaningServicesResults.slice(
+                            0, allCleaningServicesResults.length / 2 );
+
+                        secondColumn = allCleaningServicesResults.slice(
+                            allCleaningServicesResults.length / 2, allCleaningServicesResults.length );
+
                     }
 
                     function sortNights ()
@@ -312,13 +349,21 @@ define( [ 'N/runtime' ], function ( runtime )
                                     daysOfTheWeek.set(
                                         6, cleaningNights[ i ] );
                                     break;
+                                case "Weekend":
+                                    daysOfTheWeek.set(
+                                        7, cleaningNights[ i ] );
+                                    break;
+                                case "Any":
+                                    daysOfTheWeek.set(
+                                        8, cleaningNights[ i ] );
+                                    break;
                                 default:
                                     daysOfTheWeek.set(
-                                        7, "Weekend" );
+                                        9, "" );
                             }
                         }
 
-                        for ( let i = 0; i < 7; i++ )
+                        for ( let i = 0; i < 10; i++ )
                         {
                             if ( daysOfTheWeek.get( i ) == undefined )
                             {
@@ -620,8 +665,8 @@ define( [ 'N/runtime' ], function ( runtime )
                             'column2': 'Specialty - Monthly Amount: ' + '\n\nDesc: '
                         },
                         {
-                            'column1': allCleaningServicesResults,
-                            'column2': ''
+                            'column1': firstColumn ?? allCleaningServicesResults,
+                            'column2': secondColumn ?? ''
                         } ];
                         // { 'column1': 'Specialty - Monthly Amount: ' + specialty.rate, 'column2': 'Specialty Detail: ' + specialty.description, }, { 'column1': 'Escrow - Monthly Amount: ' + escrow.rate, 'column2': 'Escrow Detail: ' + escrow.description } ];
 
@@ -866,8 +911,7 @@ define( [ 'N/runtime' ], function ( runtime )
         outer();
     }
 
-    document.getElementById( 'custpage_pdfdownload' )
-        .onclick = generatePdf;
+    document.getElementById( 'custpage_pdfdownload' ).onclick = generatePdf;
 
     return { generatePdf: generatePdf };
 

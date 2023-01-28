@@ -16,6 +16,18 @@ describe( 'IS KPI Automation Results:', () =>
     cy.get( '[data-testid="input-password"]' ).type( Cypress.env( 'rPasswrd' ) );
     cy.get( '.css-1b5p2my-Content' ).click();
     cy.wait( 10000 );
+
+    const mfa = '/identity/mfa-recommendation';
+    cy.url().then( ( $url ) =>
+    {
+      if ( $url.includes( mfa ) )
+      {
+        cy.wait( 8000 );
+        cy.get( '[data-testid="shortSnooze"] > .css-1b5p2my-Content > span' ).click();
+      }
+
+    } );
+    cy.wait( 8000 );
     cy.get( '.e13ghijt0' ).click();
     cy.wait( 8000 );
     cy.get( ':nth-child(3) > .css-fr1ni3 > .css-tjafot' ).click();
@@ -198,7 +210,7 @@ describe( 'IS KPI Automation Results:', () =>
           .should( 'be.visible' )
           .selectFile( Cypress.env( 'fileFolder' ) + fileList + ".csv", { force: true } );
         cy.get( '#date' ).type( results );
-        cy.task( 'log', 'Uploading ' + fileList + ' for date: ' + results );
+        cy.task( 'log', 'Uploading ' + fileList + '.csv' + ' for date: ' + results );
         cy.wait( 2000 );
         cy.get( '.ml-3' ).click();
         cy.task( 'log', 'Uploading CSV...' );

@@ -48,7 +48,7 @@ define( [ 'N/runtime' ], function ( runtime )
             let companyName = document.getElementsByClassName( 'uir-record-name' );
 
             let locationOfCustomer = document.getElementById( 'shipaddr1' ).value + ' ' +
-                document.getElementById( 'shipcity' ).value + '' +
+                document.getElementById( 'shipcity' ).value + ' ' +
                 document.getElementById( 'shipstate' ).value + ' ' +
                 document.getElementById( 'shipzip' ).value;
 
@@ -187,7 +187,7 @@ define( [ 'N/runtime' ], function ( runtime )
                             data.push( [ rate, description, frequency, nights ] );
                         }
                         if ( val.innerText.includes( type ) && val.innerText == 'Specialty Allowance Monthly'
-                            && val.parentElement.children[ 4 ] == '' == bool )
+                            && val.parentElement.children[ 4 ].innerText == '' == bool )
                         {
                             rate = val.parentElement.children[ 3 ]?.innerText ?? "";
                             description = val.parentElement.children[ 2 ]?.innerText ?? "";
@@ -237,7 +237,7 @@ define( [ 'N/runtime' ], function ( runtime )
                     customerItemsTableCells.description,
                     customerItemsTableCells.frequency,
                     customerItemsTableCells.nights,
-                    false
+                    true
                 );
 
             let specialty = customerItemsTableCells
@@ -246,7 +246,7 @@ define( [ 'N/runtime' ], function ( runtime )
                     customerItemsTableCells.description,
                     customerItemsTableCells.frequency,
                     customerItemsTableCells.nights,
-                    true
+                    false
                 );
 
             let highest = '';
@@ -254,23 +254,13 @@ define( [ 'N/runtime' ], function ( runtime )
 
             cleaningServices.data.forEach( ( item, i, list ) =>
             {
-
-                if ( parseInt( list[ i ][ 0 ] ) < parseInt( list[ i - i ][ 0 ] ) )
+                if ( parseFloat( list[ i ][ 0 ].replace( /\,/g, '' ) ) < parseFloat( list[ i - i ][ 0 ].replace( /\,/g, '' ) ) )
                 {
-
-                    highest = cleaningServices.data[ i ];
-                    other.push( item );
-
-                }
-                else if ( parseInt( list[ i ][ 0 ] ) > parseInt( list[ i - i ][ 0 ] ) )
-                {
-
-                    highest = cleaningServices.data[ i - i ];
                     other.push( item );
 
                 } else
                 {
-                    highest = cleaningServices.data[ 0 ];
+                    highest = cleaningServices.data[ i ];
                 }
 
             } );
@@ -285,10 +275,13 @@ define( [ 'N/runtime' ], function ( runtime )
             {
                 for ( let i = 0; i < other.length; i++ )
                 {
+                    let nightsCleanedOther = sortNights( other, i );
+
                     allCleaningServicesResults
-                        .push( '\n\nOther Cleaning Services - Monthly Amount: ' +
-                            other[ i ][ 0 ] + '\n\nDesc: ' +
-                            other[ i ][ 1 ] );
+                        .push( '\n\nOther Cleaning Services - Monthly Amount: ' + other[ i ][ 0 ] +
+                            '\n\nDesc: ' + other[ i ][ 1 ] +
+                            '\n\nFrequency: ' + other[ i ][ 2 ] +
+                            '\n\nNights Cleaned: ' + nightsCleanedOther + '\n\n______________________________________________________' );
                 }
 
             } else
@@ -302,9 +295,24 @@ define( [ 'N/runtime' ], function ( runtime )
             secondColumn = allCleaningServicesResults.slice(
                 0, allCleaningServicesResults.length / 2 );
 
-            function sortNights ()
+            function sortNights ( type, i )
             {
-                let cleaningNights = highest[ 3 ].split( ',' );
+                let cleaningNights;
+                if ( type == highest )
+                {
+                    cleaningNights = type[ 3 ].split( ',' );
+                }
+
+                if ( type == other )
+                {
+                    cleaningNights = type[ i ][ 3 ].split( ',' );
+                }
+
+                if ( type != highest && type != other )
+                {
+                    cleaningNights = type.nights.split( ',' );
+                }
+
                 let daysOfTheWeek = new Map();
                 let nights = [];
 
@@ -365,17 +373,17 @@ define( [ 'N/runtime' ], function ( runtime )
                 return nights.toString();
             }
 
-            let nightsCleaned = sortNights();
+            let nightsCleanedHighest = sortNights( highest );
+
+            let nightsCleanedDayPorter = sortNights( dayPorter );
+
+            let nightsCleanedSpecialty = sortNights( specialty );
+
+            let nightsCleanedEscrow = sortNights( escrow );
+
+            let nightsCleanedDiscountItem = sortNights( discountItem );
 
             const alertBox = require( 'N/ui/dialog' );
-
-            let dayPorterAlertResult = '';
-
-            let specialtyAlertResult = '';
-
-            let discountAlertResult = '';
-
-            let escrowAlertResult = '';
 
             function showTheAlertBox ()
             {
@@ -387,8 +395,8 @@ define( [ 'N/runtime' ], function ( runtime )
                 //     function escrowSuccess ( result )
                 //     {
                 //         console.log( 'Success with value: ' + result );
-                //         escrowAlertResult = result;
-                //         if ( escrowAlertResult == 2 ) { escrow.rate = ''; escrow.description = ''; }
+                //       
+                //         if ( result == 2 ) { escrow.rate = ''; escrow.description = ''; }
                 //     }
                 //     function escrowFailure ( reason )
                 //     {
@@ -414,8 +422,8 @@ define( [ 'N/runtime' ], function ( runtime )
 
                 //     function specialtySuccess ( result )
                 //     {
-                //         console.log( 'Success with value: ' + result ); specialtyAlertResult = result;
-                //         if ( specialtyAlertResult == 2 ) { specialty.rate = ''; specialty.description = ''; }
+                //         console.log( 'Success with value: ' + result );
+                //         if ( result == 2 ) { specialty.rate = ''; specialty.description = ''; }
                 //     }
                 //     function specialtyFailure ( reason )
                 //     {
@@ -450,9 +458,7 @@ define( [ 'N/runtime' ], function ( runtime )
                     {
                         console.log( 'Success with value: ' + result );
 
-                        dayPorterAlertResult = result;
-
-                        if ( dayPorterAlertResult == 2 )
+                        if ( result == 2 )
                         {
                             dayPorter.rate = ''; dayPorter.description = '';
                         }
@@ -502,9 +508,7 @@ define( [ 'N/runtime' ], function ( runtime )
                     {
                         console.log( 'Success with value: ' + result );
 
-                        discountAlertResult = result;
-
-                        if ( discountAlertResult == 2 )
+                        if ( result == 2 )
                         {
                             discountItem.rate = ''; discountItem.description = '';
                         }
@@ -640,20 +644,31 @@ define( [ 'N/runtime' ], function ( runtime )
                 {
                     'column1': 'Cleaning Services - Monthly Amount: ' + highest[ 0 ] +
                         '\n\nDesc: ' + highest[ 1 ] +
-                        '\n\nEst. Cleaning Time: ' +
-                        accountInformationTextContent[ 16 ].data,
+                        '\n\nFrequency: ' + highest[ 2 ] +
+                        '\n\nNights Cleaned: ' + nightsCleanedHighest,
 
-                    'column2': 'Discount Item: ' +
-                        discountItem.rate + '\n\nDesc: ' +
-                        discountItem.description
+                    'column2': 'Est. Cleaning Time: ' +
+                        accountInformationTextContent[ 16 ].data
                 },
                 {
-                    'column1': 'Nights Cleaned: ' + nightsCleaned,
-                    'column2': 'Day Porter - Monthly Amount: ' + dayPorter.rate + '\n\nDesc: ' + dayPorter.description
+                    'column1': 'Day Porter - Monthly Amount: ' + dayPorter.rate +
+                        '\n\nDesc: ' + dayPorter.description +
+                        '\n\nFrequency: ' + dayPorter.frequency +
+                        '\n\nNights Cleaned: ' + nightsCleanedDayPorter,
+                    'column2': 'Discount Item: ' + discountItem.rate +
+                        '\n\nDesc: ' + discountItem.description +
+                        '\n\nFrequency: ' + discountItem.frequency +
+                        '\n\nNights Cleaned: ' + nightsCleanedDiscountItem
                 },
                 {
-                    'column1': 'Escrow - Monthly Amount: ' + /* escrow.rate + */ '\n\nDesc: ' /* + escrow.description */,
-                    'column2': 'Specialty - Monthly Amount: ' + /* specialty.rate + */ '\n\nDesc: ' /* + specialty.description */
+                    'column1': 'Escrow - Monthly Amount: ' + /* escrow.rate + */
+                        '\n\nDesc: ' /* + escrow.description */ +
+                        '\n\nFrequency: ' + /* escrow.frequency */
+                        '\n\nNights Cleaned: ' /* escrow.nights */,
+                    'column2': 'Specialty - Monthly Amount: ' + /* specialty.rate + */
+                        '\n\nDesc: ' /* + specialty.description */ +
+                        '\n\nFrequency: ' + /* specialty.frequency */
+                        '\n\nNights Cleaned: ' /* specialty.nights */,
                 },
                 {
                     'column1': firstColumn ?? allCleaningServicesResults,
